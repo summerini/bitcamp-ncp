@@ -10,7 +10,7 @@
 </style>
 </head>
 <body>
-<h1>jQuery 만들기 - 16. post() 요청</h1>
+<h1>jQuery 만들기 - 16. post()</h1>
 <form id="login-form">
 이메일: <input type="email" name="email"><br>
 암호: <input type="password" name="password"><br>
@@ -18,20 +18,7 @@
 <button type="reset">취소</button>
 </form>
 
-<script src="jquery-15.js"></script>
-
-<script>
-    let obj = {
-        email: "hong@test.com",
-        password: "1111"
-    };
-
-    for (let key in obj) {
-        console.log(key, obj[key]);
-    }
-
-</script>
-
+<script src="jquery-16.js"></script>
 <script>
 "use strict"
 
@@ -41,9 +28,9 @@ $("#login-form").submit((e) => {
     $.post("http://localhost:3000/login", {
             email: $("#login-form > input[name='email']").val(),
             password: $("#login-form > input[name='password']").val()
-         },(result) => {
-             console.log(result);
-         });
+        }, (result) => {
+            console.log(result);
+        });
 
     // 따로 AJAX 요청을 할 것이기 때문에,
     // 웹브라우저가 서버에 요청하는 것은 막는다.

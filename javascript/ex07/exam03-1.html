@@ -14,7 +14,7 @@
 "use strict"
 // 동기 요청의 문제점
 // => 서버에서 응답을 할 때까지 send() 메서드는 리턴하지 않는다.
-// => 따라서 작업 시간이 오래 걸리는 경우 send() 메서드가 리턴하지 않아서
+// => 따라서 작업 시간이 오래 걸리는 경우 send() 메서드가 리턴하지 않아서  
 //    다른 작업을 수행하지 못하는 상황이 발생한다.
 
 var ta = document.querySelector("#ta");
@@ -24,7 +24,7 @@ document.querySelector("#btn1").onclick = () => {
 
     // 클라이언트 쪽의 반응을 확인해 보기 위해 
     // test3.jsp는 일부로 응답시간을 지연시킬 것이다. 
-    xhr.open("GET", "http://127.0.0.1:3000/exam03-1", false);
+    xhr.open("GET", "http://localhost:3000/exam03-1", false);
     xhr.send();
     // 서버에서 응답할 때 까지 send()는 리턴하지 않기 때문에 
     // 다음 라인을 실행할 수 없다. 

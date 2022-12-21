@@ -11,7 +11,7 @@
 //11. ajax()
 //12. ajax() 코드 정리
 //13. getJSON()
-//14. val()
+//14. val(), html()
 function jQuery(selector) {
   return new ElementBox(selector);
 }
@@ -59,10 +59,21 @@ ElementBox.prototype.appendTo = function(parentBox) {
 };
 
 ElementBox.prototype.html = function(content) {
-  for (let e of this.el) {
-    e.innerHTML = content;
+  if (this.el.length == 0) {
+    return;
   }
-  return this;
+
+  if (arguments.length > 0) {
+    // 파라미터 값이 있으면 setter로 동작한다.
+    for (let e of this.el) {
+      e.innerHTML = content;
+    }
+    return this;
+
+  } else {
+    // 파라미터 값이 없으면 getter로 동작한다.
+    return this.el[0].innerHTML;
+  }
 };
 
 ElementBox.prototype.on = function(eventName, listener) {

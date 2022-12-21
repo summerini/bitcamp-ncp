@@ -20,18 +20,6 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script>
-    let obj = {
-        email: "hong@test.com",
-        password: "1111"
-    };
-
-    for (let key in obj) {
-        console.log(key, obj[key]);
-    }
-
-</script>
-
-<script>
 "use strict"
 
 var tbody = $("tbody");
@@ -40,9 +28,9 @@ $("#login-form").submit((e) => {
     $.post("http://localhost:3000/login", {
             email: $("#login-form > input[name='email']").val(),
             password: $("#login-form > input[name='password']").val()
-         },(result) => {
-             console.log(result);
-         });
+        }, (result) => {
+            console.log(result);
+        });
 
     // 따로 AJAX 요청을 할 것이기 때문에,
     // 웹브라우저가 서버에 요청하는 것은 막는다.

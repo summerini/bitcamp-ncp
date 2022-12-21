@@ -13,7 +13,7 @@
 //13. getJSON()
 //14. val(), html()
 //15. submit(), ajax() 변경
-//16. post() 요청
+//16. post()
 function jQuery(selector) {
   return new ElementBox(selector);
 }

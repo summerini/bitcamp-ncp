@@ -53,7 +53,7 @@ document.querySelector("#btn1").onclick = () => {
         }
     };
     
-    xhr.open("GET", "http://127.0.0.1:3000/exam03-5?a=" + a.value + "&b=" + b.value, true);
+    xhr.open("GET", "http://localhost:3000/exam03-5?a=" + a.value + "&b=" + b.value, true);
     xhr.send();
     console.log("send() 리턴함.");
 };

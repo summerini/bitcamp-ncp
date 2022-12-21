@@ -9,7 +9,7 @@
 //9. click()
 //10. 리팩토링
 //11. ajax()
-//12. ajax() 코드정리
+//12. ajax() 코드 정리
 function jQuery(selector) {
   return new ElementBox(selector);
 }

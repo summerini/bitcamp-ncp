@@ -28,35 +28,29 @@ function ElementBox(selector) {
 
 ElementBox.prototype.append = function(childBox) {
   for (let parent of this.el) {
-
-    for (let child of childBox) {
+    for (let child of childBox.el) {
       parent.appendChild(child.cloneNode(true));
     }
   }
-
-  for (let child of childBox) {
+  for (let child of childBox.el) {
     if (child.parentElement != null || child.parentElement != undefined) {
       child.parentElement.removeChild(child);
     }
   }
-
   return this;
 };
 
 ElementBox.prototype.appendTo = function(parentBox) {
   for (let parentTag of parentBox.el) {
-
     for (let child of this.el) {
       parentTag.appendChild(child.cloneNode(true));
     }
   }
-
   for (let child of this.el) {
     if (child.parentElement != null || child.parentElement != undefined) {
       child.parentElement.removeChild(child);
     }
   }
-
   return this;
 };
 
@@ -64,7 +58,6 @@ ElementBox.prototype.html = function(content) {
   for (let e of this.el) {
     e.innerHTML = content;
   }
-
   return this;
 };
 
@@ -72,7 +65,6 @@ ElementBox.prototype.on = function(eventName, listener) {
   for (let e of this.el) {
     e.addEventListener(eventName, listener);
   }
-
   return this;
 };
 

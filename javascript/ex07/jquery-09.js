@@ -72,15 +72,11 @@ function jQuery(selector) {
     for (let e of el) {
       e.addEventListener(eventName, listener);
     }
-
     return this;
   };
 
   el.click = function(handler) {
-    for (let e of el) {
-      e.addEventListener('click', handler);
-    }
-
+    this.on('click', handler);
     return this;
   };
 

@@ -30,7 +30,7 @@ document.querySelector("#btn1").onclick = () => {
     var xhr = new XMLHttpRequest();
     
     // GET 요청은 데이터를 URL에 붙인다. 
-    xhr.open("GET", "/exam02-1?name=홍길동&age=20", false);
+    xhr.open("GET", "http://127.0.0.1:3000/exam02-1?name=홍길동&age=20", false);
     xhr.send();
     ta.value = xhr.responseText;
 };
