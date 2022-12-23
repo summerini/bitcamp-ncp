@@ -30,6 +30,8 @@ thead > tr > th:nth-child(4) {
 //
 $(document).ready(() => {
     let tbody = $("tbody"); 
+
+    // tbody에 들어갈 내용을 모드 만든 후에 한 번에 
     let contents = "";
     $.getJSON("http://localhost:3000/exam04-3", (result) => {
         result.forEach((b) => {
@@ -43,7 +45,7 @@ $(document).ready(() => {
 </head>
 
 <body>
-<h1>load 이벤트 - 비동기 방식에서 화면 깜박임 처리</h1>
+<h1>load 이벤트 - 콘텐츠를 변경하는 방법1</h1>
 
 <table border="1">
 <thead>

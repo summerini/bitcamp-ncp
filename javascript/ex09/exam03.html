@@ -2,18 +2,41 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>모듈</title>
+<title>ex07</title>
 </head>
 <body>
+<h1>fetch() 사용하기!</h1>
+<table border="1">
+<thead>
+    <tr><th>번호</th><th>제목</th><th>작성자</th><th>조회수</th></tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<script>
+"use strict"
+var tbody = document.querySelector("tbody");
 
-<h1>export/import - 여러 개 프로퍼티 다루기</h1>
+fetch("http://localhost:3000/boards")
+.then((response) => {
+    return response.json();
+})
+.then((arr) => {
+    for (var b of arr) {
+        var tr = document.createElement("tr");	
+        tr.innerHTML = "<td>" + b.no + "</td>" + 
+            "<td>" + b.title + "</td>" + 
+            "<td>" + b.writer + "</td>" +
+            "<td>" + b.viewCnt + "</td>";
+        tbody.appendChild(tr);
+    }
+});
 
-<script type="module">
-  import {v1, v2, f1} from "./modules/m3.js";
-  console.log(v1);
-  console.log(v2);
-  f1();
 </script>
-
 </body>
 </html>
+
+
+
+
+
