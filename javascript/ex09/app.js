@@ -81,4 +81,3 @@ app.get('/weather', (req, res) => {
 app.listen(port, () => {
   console.log(`${port}번 포트에서 서버 시작했음!`);
 });
-
