@@ -43,11 +43,13 @@ public class Exam0120 {
     printScore(s3);
   }
 
-  static void printScore(Score s) {
+  static void compute() {
     s.sum = s.kor + s.eng + s.math;
     s.aver = (float) s.sum / 3;
+  }
 
-    System.out.printf("%s: %d, %d, %d, %d, %.1f\n", 
+  static void printScore(Score s) {
+    System.out.printf("%s: %d, %d, %d, %d, %.1f\n",
         s.name, s.kor, s.eng, s.math, s.sum, s.aver);
   }
 }
