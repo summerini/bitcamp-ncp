@@ -7,33 +7,23 @@ public class MemberHandler {
   static final int SIZE = 100;
   static int count = 0;
 
+  // 레퍼런스 배열 준비
   static Member[] members = new Member[SIZE];
 
   static void inputMembers() {
-    for (int i = 0; i < SIZE; i++) {
-      Member m = new Member();
-      m.no = Prompt.inputInt("번호? ");
-      m.name = Prompt.inputString("이름? ");
-      m.tel = Prompt.inputString("전화? ");
-      m.postNo = Prompt.inputString("우편번호? ");
-      m.basicAddress = Prompt.inputString("주소1? ");
-      m.detailAddress = Prompt.inputString("주소2? ");
-      m.working = Prompt.inputInt("0. 미취업\n1. 재직중\n재직자? ") == 1;
-      m.gender = Prompt.inputInt("0. 남자\n1. 여자\n성별? ") == 0 ? 'M' : 'W';
-      m.level = (byte) Prompt.inputInt("0. 비전공자\n1. 준전공자\n2. 전공자\n전공? ");
-      m.createdDate = new Date(System.currentTimeMillis()).toString();
+    Member m = new Member();
+    m.no = Prompt.inputInt("번호? ");
+    m.name = Prompt.inputString("이름? ");
+    m.tel = Prompt.inputString("전화? ");
+    m.postNo = Prompt.inputString("우편번호? ");
+    m.basicAddress = Prompt.inputString("주소1? ");
+    m.detailAddress = Prompt.inputString("주소2? ");
+    m.working = Prompt.inputInt("0. 미취업\n1. 재직중\n재직자? ") == 1;
+    m.gender = Prompt.inputInt("0. 남자\n1. 여자\n성별? ") == 0 ? 'M' : 'W';
+    m.level = (byte) Prompt.inputInt("0. 비전공자\n1. 준전공자\n2. 전공자\n전공? ");
+    m.createdDate = new Date(System.currentTimeMillis()).toString();
 
-      members[i] = m;
-
-      count++;
-
-      String str = Prompt.inputString("계속 입력하시겠습니까?(Y/n) ");
-      if (!str.equalsIgnoreCase("Y") && str.length() != 0) {
-        break;
-      }
-    }
-
-    Prompt.close();
+    members[count++] = m;
   }
 
   static void printMembers() {
