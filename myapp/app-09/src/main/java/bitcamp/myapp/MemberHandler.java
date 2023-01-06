@@ -4,20 +4,15 @@ import java.sql.Date;
 
 public class MemberHandler {
 
-  // 모든 인스턴스가 공유하는 데이터를 스태틱 필드로 만든다.
-  // 특히 데이터를 조회하는 용으로 사용하는 final 변수는 스태틱 필드로 만들어야 한다.
   static final int SIZE = 100;
+  static int count = 0;
 
-  int count;
-  Member[] members = new Member[SIZE];
-  String title;
+  // 레퍼런스 배열 준비
+  static Member[] members = new Member[SIZE];
 
-  // 인스턴스를 만들 때 프롬프트 제목을 반드시 입력하도록 강제한다
-  MemberHandler(String title) {
-    this.title = title;
-  }
+  static String title = "회원관리";
 
-  void inputMember() {
+  static void inputMember() {
     Member m = new Member();
     m.no = Prompt.inputInt("번호? ");
     m.name = Prompt.inputString("이름? ");
@@ -30,14 +25,14 @@ public class MemberHandler {
     m.level = (byte) Prompt.inputInt("0. 비전공자\n1. 준전공자\n2. 전공자\n전공? ");
     m.createdDate = new Date(System.currentTimeMillis()).toString();
 
-    this.members[count++] = m;
+    members[count++] = m;
   }
 
-  void printMembers() {
+  static void printMembers() {
     System.out.println("번호\t이름\t전화\t재직\t전공");
 
-    for (int i = 0; i < this.count; i++) {
-      Member m = this.members[i];
+    for (int i = 0; i < count; i++) {
+      Member m = members[i];
       System.out.printf("%d\t%s\t%s\t%s\t%s\n",
           m.no, m.name, m.tel,
           m.working ? "예" : "아니오",
@@ -45,10 +40,10 @@ public class MemberHandler {
     }
   }
 
-  void printMember() {
+  static void printMember() {
     int memberNo = Prompt.inputInt("회원번호? ");
 
-    Member m = this.findByNo(memberNo);
+    Member m = findByNo(memberNo);
 
     if (m == null) {
       System.out.println("해당 번호의 회원이 없습니다.");
@@ -66,8 +61,6 @@ public class MemberHandler {
     System.out.printf("  등록일: %s\n", m.createdDate);
   }
 
-  // 인스턴스 멤버(필드나 메서드)를 사용하지 않기 때문에
-  // 그냥 스태틱 메서드로 두어라!
   static String getLevelText(int level) {
     switch (level) {
       case 0: return "비전공자";
@@ -76,10 +69,10 @@ public class MemberHandler {
     }
   }
 
-  void modifyMember() {
+  static void modifyMember() {
     int memberNo = Prompt.inputInt("회원번호? ");
 
-    Member old = this.findByNo(memberNo);
+    Member old = findByNo(memberNo);
 
     if (old == null) {
       System.out.println("해당 번호의 회원이 없습니다.");
@@ -107,7 +100,7 @@ public class MemberHandler {
 
     String str = Prompt.inputString("정말 변경하시겠습니까?(y/N) ");
     if (str.equalsIgnoreCase("Y")) {
-      this.members[this.indexOf(old)] = m;
+      members[indexOf(old)] = m;
       System.out.println("변경했습니다.");
     } else {
       System.out.println("변경 취소했습니다.");
@@ -115,10 +108,10 @@ public class MemberHandler {
 
   }
 
-  void deleteMember() {
+  static void deleteMember() {
     int memberNo = Prompt.inputInt("회원번호? ");
 
-    Member m = this.findByNo(memberNo);
+    Member m = findByNo(memberNo);
 
     if (m == null) {
       System.out.println("해당 번호의 회원이 없습니다.");
@@ -131,40 +124,40 @@ public class MemberHandler {
       return;
     }
 
-    for (int i = this.indexOf(m) + 1; i < this.count; i++) {
-      this.members[i - 1] = this.members[i];
+    for (int i = indexOf(m) + 1; i < count; i++) {
+      members[i - 1] = members[i];
     }
-    this.members[--this.count] = null; // 레퍼런스 카운트를 줄인다.
+    members[--count] = null; // 레퍼런스 카운트를 줄인다.
 
     System.out.println("삭제했습니다.");
 
   }
 
-  Member findByNo(int no) {
-    for (int i = 0; i < this.count; i++) {
-      if (this.members[i].no == no) {
-        return this.members[i];
+  static Member findByNo(int no) {
+    for (int i = 0; i < count; i++) {
+      if (members[i].no == no) {
+        return members[i];
       }
     }
     return null;
   }
 
-  int indexOf(Member m) {
-    for (int i = 0; i < this.count; i++) {
-      if (this.members[i].no == m.no) {
+  static int indexOf(Member m) {
+    for (int i = 0; i < count; i++) {
+      if (members[i].no == m.no) {
         return i;
       }
     }
     return -1;
   }
 
-  void searchMember() {
+  static void searchMember() {
     String name = Prompt.inputString("이름? ");
 
     System.out.println("번호\t이름\t전화\t재직\t전공");
 
-    for (int i = 0; i < this.count; i++) {
-      Member m = this.members[i];
+    for (int i = 0; i < count; i++) {
+      Member m = members[i];
       if (m.name.equalsIgnoreCase(name)) {
         System.out.printf("%d\t%s\t%s\t%s\t%s\n",
             m.no, m.name, m.tel,
@@ -174,9 +167,9 @@ public class MemberHandler {
     }
   }
 
-  void service() {
+  static void service() {
     while (true) {
-      System.out.printf("[%s]\n", this.title);
+      System.out.println(title);
       System.out.println("1. 등록");
       System.out.println("2. 목록");
       System.out.println("3. 조회");
@@ -184,16 +177,16 @@ public class MemberHandler {
       System.out.println("5. 삭제");
       System.out.println("6. 검색");
       System.out.println("0. 이전");
-      int menuNo = Prompt.inputInt(String.format("%s> ", this.title));
+      int menuNo = Prompt.inputInt(String.format("%s> ", title));
 
       switch (menuNo) {
         case 0: return;
-        case 1: this.inputMember(); break;
-        case 2: this.printMembers(); break;
-        case 3: this.printMember(); break;
-        case 4: this.modifyMember(); break;
-        case 5: this.deleteMember(); break;
-        case 6: this.searchMember(); break;
+        case 1: inputMember(); break;
+        case 2: printMembers(); break;
+        case 3: printMember(); break;
+        case 4: modifyMember(); break;
+        case 5: deleteMember(); break;
+        case 6: searchMember(); break;
         default:
           System.out.println("잘못된 메뉴 번호 입니다.");
       }
