@@ -1,8 +1,5 @@
 package bitcamp.myapp;
 
-import java.lang.reflect.Member;
-import java.sql.Date;
-
 public class BoardHandler {
 
   // 모든 인스턴스가 공유하는 데이터를 스태틱 필드로 만든다.
@@ -10,7 +7,7 @@ public class BoardHandler {
   static final int SIZE = 100;
 
   int count;
-  Board[] members = new Member[SIZE];
+  Board[] boards = new Board[SIZE];
   String title;
 
   // 인스턴스를 만들 때 프롬프트 제목을 반드시 입력하도록 강제한다
@@ -18,67 +15,46 @@ public class BoardHandler {
     this.title = title;
   }
 
-  void inputMember() {
-    Board m = new Member();
-    m.no = Prompt.inputInt("번호? ");
-    m.name = Prompt.inputString("이름? ");
-    m.tel = Prompt.inputString("전화? ");
-    m.postNo = Prompt.inputString("우편번호? ");
-    m.basicAddress = Prompt.inputString("주소1? ");
-    m.detailAddress = Prompt.inputString("주소2? ");
-    m.working = Prompt.inputInt("0. 미취업\n1. 재직중\n재직자? ") == 1;
-    m.gender = Prompt.inputInt("0. 남자\n1. 여자\n성별? ") == 0 ? 'M' : 'W';
-    m.level = (byte) Prompt.inputInt("0. 비전공자\n1. 준전공자\n2. 전공자\n전공? ");
-    m.createdDate = new Date(System.currentTimeMillis()).toString();
+  void inputBoard() {
+    Board m = new Board();
+    m.no = Prompt.inputInt("게시글 번호? ");
+    m.getdate = Prompt.inputString("작성일 ex)23-01-07 ");
+    m.title = Prompt.inputString("게시글 제목? ");
+    m.content = Prompt.inputString("게시글 내용? ");
+    m.password = Prompt.inputString("게시글 암호? ");
 
-    this.members[count++] = m;
+    this.boards[count++] = m;
   }
 
-  void printMembers() {
-    System.out.println("번호\t이름\t전화\t재직\t전공");
+  void printBoards() {
+    System.out.println("게시글 번호\t게시글 제목\t작성일\t조회수\t");
 
     for (int i = 0; i < this.count; i++) {
-      Board m = this.members[i];
-      System.out.printf("%d\t%s\t%s\t%s\t%s\n",
-          m.no, m.name, m.tel,
-          m.working ? "예" : "아니오",
-              getLevelText(m.level));
+      Board m = this.boards[i];
+      System.out.printf("%8d\t%8s\t%4s\t%s\t\n",
+          m.no, m.title, m.getdate, m.viewCount);
     }
   }
 
-  void printMember() {
-    int memberNo = Prompt.inputInt("회원번호? ");
+  void printBoard() {
+    int board = Prompt.inputInt("게시글 번호? ");
 
-    Board m = this.findByNo(memberNo);
+    Board m = this.findByNo(board);
 
     if (m == null) {
-      System.out.println("해당 번호의 회원이 없습니다.");
+      System.out.println("해당 번호의 게시글이 없습니다.");
       return;
     }
 
-    System.out.printf("    이름: %s\n", m.name);
-    System.out.printf("    전화: %s\n", m.tel);
-    System.out.printf("우편번호: %s\n", m.postNo);
-    System.out.printf("기본주소: %s\n", m.basicAddress);
-    System.out.printf("상세주소: %s\n", m.detailAddress);
-    System.out.printf("재직여부: %s\n", m.working ? "예" : "아니오");
-    System.out.printf("    성별: %s\n", m.gender == 'M' ? "남자" : "여자");
-    System.out.printf("    전공: %s\n", getLevelText(m.level));
-    System.out.printf("  작성일: %s\n", m.createdDate);
-  }
-
-  // 인스턴스 멤버(필드나 메서드)를 사용하지 않기 때문에
-  // 그냥 스태틱 메서드로 두어라!
-  static String getLevelText(int level) {
-    switch (level) {
-      case 0: return "비전공자";
-      case 1: return "준전공자";
-      default: return "전공자";
-    }
+    System.out.printf("게시글 제목: %s\n", m.title);
+    System.out.printf("게시글 내용: %s\n", m.content);
+    System.out.printf("게시글 암호: %s\n", m.password);
+    System.out.printf("작성일: %s\n", m.getdate);
+    System.out.printf("조회수: %s\n", m.viewCount);
   }
 
   void modifyMember() {
-    int memberNo = Prompt.inputInt("회원번호? ");
+    int memberNo = Prompt.inputInt("게시글 번호? ");
 
     Board old = this.findByNo(memberNo);
 
@@ -88,35 +64,23 @@ public class BoardHandler {
     }
 
     // 변경할 데이터를 저장할 인스턴스 준비
-    Board m = new Member();
+    Board m = new Board();
     m.no = old.no;
-    m.createdDate = old.createdDate;
-    m.name = Prompt.inputString(String.format("이름(%s)? ", old.name));
-    m.tel = Prompt.inputString(String.format("전화(%s)? ", old.tel));
-    m.postNo = Prompt.inputString(String.format("우편번호(%s)? ", old.postNo));
-    m.basicAddress = Prompt.inputString(String.format("기본주소(%s)? ", old.basicAddress));
-    m.detailAddress = Prompt.inputString(String.format("상세주소(%s)? ", old.detailAddress));
-    m.working = Prompt.inputInt(String.format(
-        "0. 미취업\n1. 재직중\n재직여부(%s)? ",
-        old.working ? "재직중" : "미취업")) == 1;
-    m.gender = Prompt.inputInt(String.format(
-        "0. 남자\n1. 여자\n성별(%s)? ",
-        old.gender == 'M' ? "남자" : "여자")) == 0 ? 'M' : 'W';
-    m.level = (byte) Prompt.inputInt(String.format(
-        "0. 비전공자\n1. 준전공자\n2. 전공자\n전공(%s)? ",
-        getLevelText(old.level)));
+    m.getdate = old.getdate;
+    m.viewCount = old.viewCount;
+    m.password = Prompt.inputString(String.format("게시글 암호(%s)? ", old.password));
 
-    String str = Prompt.inputString("정말 변경하시겠습니까?(y/N) ");
+    String str = Prompt.inputString("게시글 암호를 정말 변경하시겠습니까?(y/N) ");
     if (str.equalsIgnoreCase("Y")) {
-      this.members[this.indexOf(old)] = m;
-      System.out.println("변경했습니다.");
+      this.boards[this.indexOf(old)] = m;
+      System.out.println("암호를 변경했습니다.");
     } else {
-      System.out.println("변경 취소했습니다.");
+      System.out.println("게시글 암호 변경을 취소했습니다.");
     }
   }
 
   void deleteMember() {
-    int memberNo = Prompt.inputInt("게시번호? ");
+    int memberNo = Prompt.inputInt("게시글 번호? ");
 
     Board m = this.findByNo(memberNo);
 
@@ -125,25 +89,25 @@ public class BoardHandler {
       return;
     }
 
-    String str = Prompt.inputString("정말 삭제하시겠습니까?(y/N) ");
+    String str = Prompt.inputString("게시글을 정말 삭제하시겠습니까?(y/N) ");
     if (!str.equalsIgnoreCase("Y")) {
-      System.out.println("삭제 취소했습니다.");
+      System.out.println("게시글 삭제를 취소했습니다.");
       return;
     }
 
     for (int i = this.indexOf(m) + 1; i < this.count; i++) {
-      this.members[i - 1] = this.members[i];
+      this.boards[i - 1] = this.boards[i];
     }
-    this.members[--this.count] = null; // 레퍼런스 카운트를 줄인다.
+    this.boards[--this.count] = null; // 레퍼런스 카운트를 줄인다.
 
-    System.out.println("삭제했습니다.");
+    System.out.println("게시글을 삭제했습니다.");
 
   }
 
   Board findByNo(int no) {
     for (int i = 0; i < this.count; i++) {
-      if (this.members[i].no == no) {
-        return this.members[i];
+      if (this.boards[i].no == no) {
+        return this.boards[i];
       }
     }
     return null;
@@ -151,45 +115,35 @@ public class BoardHandler {
 
   int indexOf(Board m) {
     for (int i = 0; i < this.count; i++) {
-      if (this.members[i].no == m.no) {
+      if (this.boards[i].no == m.no) {
         return i;
       }
     }
     return -1;
   }
 
-  void searchMember() {
-    String name = Prompt.inputString("게시글목록? ");
-
-    System.out.println("번호\t제목\t작성일\t조회수");
-
-    for (int i = 0; i < this.count; i++) {
-      Board m = this.members[i];
-      if (m.name.equalsIgnoreCase(name)) {
-        System.out.printf("%d\t%s\t%s\t%s\t%s\n",
-            m.no, m.name, m.tel,
-            m.working ? "예" : "아니오",
-                getLevelText(m.level));
-      }
-    }
-  }
+  //int viewCount(Board m) {
+  // UPDATE
+  //}
 
   void service() {
     while (true) {
       System.out.printf("[%s]\n", this.title);
-      System.out.println("1. 입력");
-      System.out.println("2. 제목");
-      System.out.println("3. 내용");
-      System.out.println("4. 암호");
-      System.out.println("0. 이전");
+      System.out.println("1. 게시글 입력");
+      System.out.println("2. 게시글 목록");
+      System.out.println("3. 게시글 조회");
+      System.out.println("4. 게시글 암호 변경");
+      System.out.println("5. 게시글 삭제");
+      System.out.println("0. 이전으로 돌아가기");
       int menuNo = Prompt.inputInt(String.format("%s> ", this.title));
 
       switch (menuNo) {
         case 0: return;
-        case 1: this.inputMember(); break;
-        case 2: this.printMembers(); break;
-        case 3: this.printMember(); break;
+        case 1: this.inputBoard(); break;
+        case 2: this.printBoards(); break;
+        case 3: this.printBoard(); break;
         case 4: this.modifyMember(); break;
+        case 5: this.deleteMember(); break;
         default:
           System.out.println("잘못된 메뉴 번호 입니다.");
       }

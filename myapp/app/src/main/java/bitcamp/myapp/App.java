@@ -12,17 +12,18 @@ public class App {
 
   private static void goMainMenu() {
     // 일반 학생 목록을 저장할 메모리를 준비한다.
-    BoardHandler generalMemberHandler = new BoardHandler("일반학생");
+    BoardHandler generalMemberHandler = new BoardHandler("메인메뉴");
 
     // 국비지원 학생 목록을 저장할 메모리를 준비한다.
-    BoardHandler supportedMemberHandler = new BoardHandler("국비지원학생");
+    BoardHandler supportedMemberHandler = new BoardHandler("목록");
 
     // 기업 위탁 교육생 목록을 저장할 메모리를 준비한다.
-    BoardHandler companyMemberHandler = new BoardHandler("위탁교육생");
+    BoardHandler companyMemberHandler = new BoardHandler("조회");
+
 
 
     while (true) {
-      System.out.println("1. 게시글관리");
+      System.out.println("1. 메인메뉴");
       System.out.println("9. 종료");
       int menuNo = Prompt.inputInt("메뉴> ");
 
