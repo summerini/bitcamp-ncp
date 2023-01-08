@@ -11,15 +11,7 @@ public class App {
   } // main()
 
   private static void goMainMenu() {
-    // 일반 학생 목록을 저장할 메모리를 준비한다.
     BoardHandler generalMemberHandler = new BoardHandler("메인메뉴");
-
-    // 국비지원 학생 목록을 저장할 메모리를 준비한다.
-    BoardHandler supportedMemberHandler = new BoardHandler("목록");
-
-    // 기업 위탁 교육생 목록을 저장할 메모리를 준비한다.
-    BoardHandler companyMemberHandler = new BoardHandler("조회");
-
 
 
     while (true) {

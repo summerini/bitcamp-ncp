@@ -7,5 +7,6 @@ public class Board {
   String content;
   String password;
   String getdate;
+  int getView;
   int viewCount;
 }

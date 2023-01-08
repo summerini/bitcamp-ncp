@@ -17,11 +17,13 @@ public class BoardHandler {
 
   void inputBoard() {
     Board m = new Board();
+
     m.no = Prompt.inputInt("게시글 번호? ");
     m.getdate = Prompt.inputString("작성일 ex)23-01-07 ");
     m.title = Prompt.inputString("게시글 제목? ");
     m.content = Prompt.inputString("게시글 내용? ");
     m.password = Prompt.inputString("게시글 암호? ");
+    m.viewCount = 1;
 
     this.boards[count++] = m;
   }
