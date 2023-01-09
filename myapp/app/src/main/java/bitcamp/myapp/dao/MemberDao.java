@@ -10,18 +10,10 @@ public class MemberDao {
   private Member[] members = new Member[SIZE];
 
   public void insert(Member member) {
-    this.members[count++] = member;
+    this.members[this.count++] = member;
   }
 
   public Member[] findAll() {
-    // 배열의 값 복제
-    //    Board[] arr = new Board[this.count];
-    //    for (int i = 0; i < this.count; i++) {
-    //      arr[i] = this.boards[i];
-    //    }
-    //    return arr;
-
-    //위와 같다!
     return Arrays.copyOf(members, count);
   }
 
@@ -42,15 +34,22 @@ public class MemberDao {
     for (int i = this.indexOf(member) + 1; i < this.count; i++) {
       this.members[i - 1] = this.members[i];
     }
-    this.members[--this.count] = null;
+    this.members[--this.count] = null; // 레퍼런스 카운트를 줄인다.
   }
 
-  private int indexOf(Member m) {
+  private int indexOf(Member b) {
     for (int i = 0; i < this.count; i++) {
-      if (this.members[i].getNo() == m.getNo()) {
+      if (this.members[i].getNo() == b.getNo()) {
         return i;
       }
     }
     return -1;
   }
 }
+
+
+
+
+
+
+

@@ -19,7 +19,7 @@ public class BoardController {
     b.setNo(1);
     b.setTitle("제목입니다.1");
     b.setContent("내용입니다.1");
-    b.setPassword("1111.1");
+    b.setPassword("1111");
     b.setCreatedDate("2023-1-1");
     b.setViewCount(1);
 
@@ -28,10 +28,12 @@ public class BoardController {
 
   @GetMapping("/boards/{boardNo}")
   public Object getBoard(@PathVariable int boardNo) {
+
+    Board b = this.findByNo(boardNo);
+
     // 응답 결과를 담을 맵 객체 준비
     Map<String,Object> contentMap = new HashMap<>();
 
-    Board b = this.findByNo(boardNo);
     if (b == null) {
       contentMap.put("status", "failure");
       contentMap.put("message", "해당 번호의 게시글이 없습니다.");
@@ -51,5 +53,4 @@ public class BoardController {
     }
     return null;
   }
-
 }

@@ -9,6 +9,7 @@ public class BoardHandler {
 
   private BoardDao boardDao = new BoardDao();
   private String title;
+
   // 인스턴스를 만들 때 프롬프트 제목을 반드시 입력하도록 강제한다.
   public BoardHandler(String title) {
     this.title = title;
@@ -108,18 +109,16 @@ public class BoardHandler {
       return;
     }
 
+    this.boardDao.delete(b);
+
     System.out.println("삭제했습니다.");
 
   }
 
   private void searchBoard() {
-
-    Board[] boards = boardDao.findAll();
-
+    Board[] boards = this.boardDao.findAll();
     String keyword = Prompt.inputString("검색어? ");
-
     System.out.println("번호\t제목\t작성일\t조회수");
-
     for (Board b : boards) {
       if (b.getTitle().indexOf(keyword) != -1 ||
           b.getContent().indexOf(keyword) != -1) {

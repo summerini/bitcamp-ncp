@@ -21,7 +21,7 @@ public class BoardDao {
     //    }
     //    return arr;
 
-    //위와 같다!
+    // 위와 같다!
     return Arrays.copyOf(boards, count);
   }
 
@@ -42,7 +42,7 @@ public class BoardDao {
     for (int i = this.indexOf(board) + 1; i < this.count; i++) {
       this.boards[i - 1] = this.boards[i];
     }
-    this.boards[--this.count] = null;
+    this.boards[--this.count] = null; // 레퍼런스 카운트를 줄인다.
   }
 
   private int indexOf(Board b) {
@@ -54,3 +54,10 @@ public class BoardDao {
     return -1;
   }
 }
+
+
+
+
+
+
+

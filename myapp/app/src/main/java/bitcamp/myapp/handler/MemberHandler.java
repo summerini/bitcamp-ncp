@@ -31,9 +31,10 @@ public class MemberHandler {
   }
 
   private void printMembers() {
-    System.out.println("번호\t이름\t전화\t재직\t전공");
 
     Member[] members = this.memberDao.findAll();
+
+    System.out.println("번호\t이름\t전화\t재직\t전공");
 
     for (Member m : members) {
       System.out.printf("%d\t%s\t%s\t%s\t%s\n",
@@ -64,7 +65,9 @@ public class MemberHandler {
     System.out.printf("  등록일: %s\n", m.getCreatedDate());
   }
 
-  static String getLevelText(int level) {
+  // 인스턴스 멤버(필드나 메서드)를 사용하지 않기 때문에
+  // 그냥 스태틱 메서드로 두어라!
+  private static String getLevelText(int level) {
     switch (level) {
       case 0: return "비전공자";
       case 1: return "준전공자";
@@ -82,6 +85,7 @@ public class MemberHandler {
       return;
     }
 
+    // 변경할 데이터를 저장할 인스턴스 준비
     Member m = new Member();
     m.setNo(old.getNo());
     m.setCreatedDate(old.getCreatedDate());
@@ -126,13 +130,15 @@ public class MemberHandler {
       return;
     }
 
+    memberDao.delete(m);
+
     System.out.println("삭제했습니다.");
 
   }
 
   private void searchMember() {
 
-    Member[] members = memberDao.findAll();
+    Member[] members = this.memberDao.findAll();
 
     String name = Prompt.inputString("이름? ");
 
