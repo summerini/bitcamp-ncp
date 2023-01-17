@@ -21,7 +21,7 @@ public class StudentController {
   }
 
   @PostMapping("/students")
-  public Object addStudents(Student student) {
+  public Object addStudent(Student student) {
 
     this.studentDao.insert(student);
 
@@ -31,8 +31,9 @@ public class StudentController {
     return contentMap;
   }
 
+
   @GetMapping("/students")
-  public Object getMembers() {
+  public Object getStudents() {
 
     Student[] students = this.studentDao.findAll();
 
@@ -45,7 +46,7 @@ public class StudentController {
 
 
   @GetMapping("/students/{no}")
-  public Object getMember(@PathVariable int no) {
+  public Object getStudent(@PathVariable int no) {
 
     Student b = this.studentDao.findByNo(no);
 
@@ -63,7 +64,7 @@ public class StudentController {
   }
 
   @PutMapping("/students/{no}")
-  public Object updateMember(Student student) {
+  public Object updateStudent(Student student) {
 
     Map<String,Object> contentMap = new HashMap<>();
 
@@ -84,7 +85,7 @@ public class StudentController {
   }
 
   @DeleteMapping("/students/{no}")
-  public Object deleteMember(@PathVariable int no) {
+  public Object deleteStudent(@PathVariable int no) {
 
     Student m = this.studentDao.findByNo(no);
 
