@@ -47,11 +47,6 @@ public class StudentHandler {
 
     Student m = this.memberDao.findByNo(memberNo);
 
-    if (m == null) {
-      System.out.println("해당 번호의 회원이 없습니다.");
-      return;
-    }
-
     System.out.printf("    이름: %s\n", m.getName());
     System.out.printf("    전화: %s\n", m.getTel());
     System.out.printf("우편번호: %s\n", m.getNo());
@@ -154,7 +149,7 @@ public class StudentHandler {
   }
 
   public void service() {
-    loop : while (true) {
+    while (true) {
       System.out.printf("[%s]\n", this.title);
       System.out.println("1. 등록");
       System.out.println("2. 목록");
@@ -166,9 +161,9 @@ public class StudentHandler {
 
       int menuNo;
       try {
-        menuNo = Prompt.inputInt("메뉴> ");
+        menuNo = Prompt.inputInt(String.format("%s> ", this.title));
       } catch (Exception e) {
-        System.out.println("메뉴 번호가 옳지 않습니다!");
+        System.out.println("메뉴 번호가 옳지 않습니다.");
         continue;
       }
 
@@ -185,9 +180,10 @@ public class StudentHandler {
             System.out.println("잘못된 메뉴 번호 입니다.");
         }
       } catch (Exception e) {
-        System.out.println("명령 실행중 오류 발생");
+        System.out.printf("명령 실행 중 오류 발생! - %s : %s\n",
+            e.getMessage(),
+            e.getClass().getSimpleName());
       }
     }
   }
 }
-

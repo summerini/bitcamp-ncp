@@ -15,7 +15,7 @@ public class App {
   } // main()
 
   private static void goMainMenu() {
-    // 학생 목록을 저장할 메모리를 준비한다.
+
     StudentHandler studentHandler = new StudentHandler("학생");
     TeacherHandler teacherHandler = new TeacherHandler("강사");
     BoardHandler boardHandler = new BoardHandler("게시판");
@@ -39,12 +39,14 @@ public class App {
           case 1: studentHandler.service(); break;
           case 2: teacherHandler.service(); break;
           case 3: boardHandler.service(); break;
-          case 9: break loop; // loop 라벨이 붙은 while 문을 나간다
+          case 9: break loop; // loop 라벨이 붙은 while 문을 나간다.
           default:
             System.out.println("잘못된 메뉴 번호 입니다.");
         }
       } catch (Exception e) {
-        System.out.println("명령 실행중 오류 발생");
+        System.out.printf("명령 실행 중 오류 발생! - %s : %s\n",
+            e.getMessage(),
+            e.getClass().getSimpleName());
       }
     }
   }
