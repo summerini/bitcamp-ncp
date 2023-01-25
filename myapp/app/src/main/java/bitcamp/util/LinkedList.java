@@ -1,11 +1,14 @@
 package bitcamp.util;
 
-public class LinkedList {
+import bitcamp.myapp.dao.DaoException;
+
+public class LinkedList implements List {
 
   private Node head;
   private Node tail;
   private int size;
 
+  @Override
   public void add(Object value) {
     Node node = new Node(value);
     if (this.tail == null) { // size == 0, head == null
@@ -19,6 +22,7 @@ public class LinkedList {
     this.size++;
   }
 
+  @Override
   public Object[] toArray() {
     Object[] values = new Object[this.size];
     int index = 0;
@@ -28,10 +32,10 @@ public class LinkedList {
       values[index++] = cursor.value;
       cursor = cursor.next;
     }
-
     return values;
   }
 
+  @Override
   public Object set(int index, Object value) {
     if (index < 0 || index >= this.size) {
       throw new IndexOutOfBoundsException("인덱스가 유효하지 않습니다.");
@@ -43,6 +47,7 @@ public class LinkedList {
     while (cursor != null) {
       if (i == index) {
         Object old = cursor.value;
+        cursor.value = value;
         return old;
       }
       cursor = cursor.next;
@@ -52,10 +57,11 @@ public class LinkedList {
     return null;
   }
 
+  @Override
   public boolean remove(Object value) {
     Node prevNode = null;
     Node deletedNode = null;
-    Node cursor = head;
+    Node cursor = this.head;
 
     while (cursor != null) {
       if (cursor.value.equals(value)) {
@@ -88,6 +94,7 @@ public class LinkedList {
     return true;
   }
 
+  @Override
   public int indexOf(Object b) {
     Node cursor = head;
     int i = 0;
@@ -102,13 +109,15 @@ public class LinkedList {
     return -1;
   }
 
+  @Override
   public int size() {
     return this.size;
   }
 
+  @Override
   public Object get(int index) {
     if (index < 0 || index >= this.size) {
-      throw new IndexOutOfBoundsException("인덱스가 무효합니다!");
+      throw new DaoException("인덱스가 무효합니다!");
     }
 
     Node cursor = head;
@@ -120,4 +129,18 @@ public class LinkedList {
     }
     return cursor.value;
   }
+
+  @Override
+  public Iterator iterator() {
+    // 이 LinkedList 객체에서 데이터를 꺼내주는 일을 할
+    // Iterator 구현체를 만들어 리턴한다.
+    return new ListIterator(this);
+  }
 }
+
+
+
+
+
+
+
