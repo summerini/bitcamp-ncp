@@ -1,5 +1,9 @@
 package bitcamp.myapp.dao;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.sql.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -49,6 +53,33 @@ public class StudentDao {
 
   public boolean delete(Student s) {
     return list.remove(s);
+  }
+
+  public void save(String filename) {
+    try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filename))) {
+      out.writeObject(list);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
+  @SuppressWarnings("unchecked")
+  public void load(String filename) {
+    if (list.size() > 0) {
+      return;
+    }
+
+    try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename))) {
+
+      list = (List<Student>) in.readObject();
+
+      if (list.size() > 0) {
+        lastNo = list.get(list.size() - 1).getNo();
+      }
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 
 }
