@@ -9,7 +9,7 @@ public class Board implements java.io.Serializable {
   private String title;
   private String content;
   private String password;
-  private String createdDate;
+//  private Date createdDate;
   private int viewCount;
 
   // Factory Method 패턴 + Information Expert 패턴
@@ -23,7 +23,7 @@ public class Board implements java.io.Serializable {
       obj.setContent(values[2]);
       obj.setPassword(values[3]);
       obj.setViewCount(Integer.parseInt(values[4]));
-      obj.setCreatedDate(values[5]);
+//      obj.setCreatedDate(values[5]);
 
       return obj;
 
@@ -40,7 +40,7 @@ public class Board implements java.io.Serializable {
         this.getContent(),
         this.getPassword(),
         this.getViewCount(),
-        this.getCreatedDate());
+//        this.getCreatedDate());
   }
 
   @Override
@@ -88,12 +88,12 @@ public class Board implements java.io.Serializable {
   public void setPassword(String password) {
     this.password = password;
   }
-  public String getCreatedDate() {
-    return createdDate;
-  }
-  public void setCreatedDate(String createdDate) {
-    this.createdDate = createdDate;
-  }
+//  public String getCreatedDate() {
+//    return createdDate;
+//  }
+//  public void setCreatedDate(String createdDate) {
+//    this.createdDate = createdDate;
+//  }
   public int getViewCount() {
     return viewCount;
   }
