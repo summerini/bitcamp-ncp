@@ -1,20 +1,16 @@
 package bitcamp.myapp.servlet.board;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintWriter;
 import java.util.List;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.ibatis.io.Resources;
-import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import bitcamp.myapp.dao.BoardDao;
 import bitcamp.myapp.vo.Board;
-import bitcamp.util.BitcampSqlSessionFactory;
-import bitcamp.util.DaoGenerator;
 
 @WebServlet("/board/list")
 public class BoardListServlet extends HttpServlet {
@@ -22,52 +18,40 @@ public class BoardListServlet extends HttpServlet {
 
   private BoardDao boardDao;
 
-  public BoardListServlet() {
-    try {
-      InputStream mybatisConfigInputStream = Resources.getResourceAsStream(
-          "bitcamp/myapp/config/mybatis-config.xml");
-      SqlSessionFactoryBuilder builder = new SqlSessionFactoryBuilder();
-      BitcampSqlSessionFactory sqlSessionFactory = new BitcampSqlSessionFactory(
-          builder.build(mybatisConfigInputStream));
-      boardDao = new DaoGenerator(sqlSessionFactory).getObject(BoardDao.class);
-
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+  @Override
+  public void init() {
+    ServletContext ctx = getServletContext();
+    boardDao = (BoardDao) ctx.getAttribute("boardDao");
   }
 
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
-    response.setContentType("text/html;charset=UTF-8");
-    PrintWriter out = response.getWriter();
 
-    out.println("<!DOCTYPE html>");
-    out.println("<html>");
-    out.println("<head>");
-    out.println("<meta charset='UTF-8'>");
-    out.println("<title>비트캠프 - NCP 1기</title>");
-    out.println("</head>");
-    out.println("<body>");
-    out.println("<h1>게시판</h1>");
+    String keyword = request.getParameter("keyword");
+    List<Board> boards = boardDao.findAll(keyword);
 
-    out.println("<div><a href='form'>새 글</a></div>");
+    // JSP 에서 사용할 수 있도록 ServletRequest 보관소에 저장한다.
+    request.setAttribute("boards", boards);
 
-    out.println("<table border='1'>");
-    out.println("<tr>");
-    out.println("  <th>번호</th> <th>제목</th> <th>작성일</th> <th>조회수</th>");
-    out.println("</tr>");
+    // JSP로 실행을 위임시킨다.
+    // => JSP를 실행한 다음에 다시 되돌아 온다는 것을 잊지 말라!
 
-    List<Board> boards = this.boardDao.findAll();
-    for (Board b : boards) {
-      out.println("<tr>");
-      out.printf("  <td>%d</td> <td><a href='view?no=%d'>%s</a></td> <td>%s</td> <td>%d</td>\n",
-          b.getNo(), b.getNo(), b.getTitle(), b.getCreatedDate(), b.getViewCount());
-      out.println("</tr>");
-    }
-    out.println("</table>");
+    RequestDispatcher dispatcher = request.getRequestDispatcher("/board/list.jsp");
+    // 파라미터에서 '/'는 현재 웹 애플리케이션을 가리킨다.
+    // 즉 Context Root 경로(/web)를 가리킨다.
+    // 서버에서 사용하는 / 경로는 기본이 현재 웹 애플리케이션(http://localhost:8080/web/)이다.
+    // 클라이언트에서 사용하는 / 경로는 서버 루트(http://localhost:8080/)를 의미한다.
 
-    out.println("</body>");
-    out.println("</html>");
+    dispatcher.forward(request, response); // JSP 실행! 주의! JSP를 실행한 후 되돌아 온다.
+
   }
 }
+
+
+
+
+
+
+
+
