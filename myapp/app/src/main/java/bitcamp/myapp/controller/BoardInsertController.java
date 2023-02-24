@@ -1,15 +1,11 @@
-package bitcamp.myapp.servlet.board;
+package bitcamp.myapp.controller;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.FileItem;
@@ -20,20 +16,16 @@ import bitcamp.myapp.vo.Board;
 import bitcamp.myapp.vo.BoardFile;
 import bitcamp.myapp.vo.Member;
 
-@WebServlet("/board/insert")
-public class BoardInsertServlet extends HttpServlet {
-  private static final long serialVersionUID = 1L;
+public class BoardInsertController implements PageController {
 
   private BoardService boardService;
 
-  @Override
-  public void init() {
-    boardService = (BoardService) getServletContext().getAttribute("boardService");
+  public BoardInsertController(BoardService boardService) {
+    this.boardService = boardService;
   }
 
   @Override
-  protected void doPost(HttpServletRequest request, HttpServletResponse response)
-      throws ServletException, IOException {
+  public String execute(HttpServletRequest request, HttpServletResponse response) {
     try {
       DiskFileItemFactory factory = new DiskFileItemFactory();
       ServletFileUpload upload = new ServletFileUpload(factory);
@@ -64,7 +56,7 @@ public class BoardInsertServlet extends HttpServlet {
           continue;
         }
         String filename = UUID.randomUUID().toString();
-        file.write(new File(getServletContext().getRealPath("/board/upload/" + filename)));
+        file.write(new File(request.getServletContext().getRealPath("/board/upload/" + filename)));
 
         BoardFile boardFile = new BoardFile();
         boardFile.setOriginalFilename(file.getName());
@@ -80,7 +72,7 @@ public class BoardInsertServlet extends HttpServlet {
       e.printStackTrace();
       request.setAttribute("error", "data");
     }
-    request.setAttribute("view", "/board/insert.jsp");
+    return "/board/insert.jsp";
   }
 
 }

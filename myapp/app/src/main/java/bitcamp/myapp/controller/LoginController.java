@@ -1,10 +1,6 @@
-package bitcamp.myapp.servlet.auth;
+package bitcamp.myapp.controller;
 
-import java.io.IOException;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -12,22 +8,18 @@ import bitcamp.myapp.service.StudentService;
 import bitcamp.myapp.service.TeacherService;
 import bitcamp.myapp.vo.Member;
 
-@WebServlet("/auth/login")
-public class LoginServlet extends HttpServlet {
-  private static final long serialVersionUID = 1L;
+public class LoginController implements PageController {
 
   private StudentService studentService;
   private TeacherService teacherService;
 
-  @Override
-  public void init() {
-    studentService = (StudentService) getServletContext().getAttribute("studentService");
-    teacherService = (TeacherService) getServletContext().getAttribute("teacherService");
+  public LoginController(StudentService studentService, TeacherService teacherService) {
+    this.studentService = studentService;
+    this.teacherService = teacherService;
   }
 
   @Override
-  protected void doPost(HttpServletRequest request, HttpServletResponse response)
-      throws ServletException, IOException {
+  public String execute(HttpServletRequest request, HttpServletResponse response) {
 
     String usertype = request.getParameter("usertype");
     String email = request.getParameter("email");
@@ -57,10 +49,10 @@ public class LoginServlet extends HttpServlet {
     if (member != null) {
       HttpSession session = request.getSession();
       session.setAttribute("loginUser", member);
-      request.setAttribute("view", "redirect:../");
+      return "redirect:../";
     } else {
       request.setAttribute("error", "loginfail");
-      request.setAttribute("view", "/auth/form.jsp");
+      return "/auth/form.jsp";
     }
 
   }
