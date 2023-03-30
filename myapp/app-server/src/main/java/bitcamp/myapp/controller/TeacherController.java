@@ -1,68 +1,73 @@
 package bitcamp.myapp.controller;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import bitcamp.myapp.service.TeacherService;
 import bitcamp.myapp.vo.Teacher;
+import bitcamp.util.RestResult;
+import bitcamp.util.RestStatus;
 
-@Controller
-@RequestMapping("/teacher")
+@RestController
+@RequestMapping("/teachers")
 public class TeacherController {
+
+  Logger log = LogManager.getLogger(getClass());
+
+  {
+    log.trace("TeacherController 생성됨!");
+  }
 
   @Autowired private TeacherService teacherService;
 
-  @GetMapping("form")
-  public String form() {
-    return "teacher/form";
+  @PostMapping
+  public Object insert(@RequestBody Teacher teacher) {
+    teacherService.add(teacher);
+    return new RestResult()
+        .setStatus(RestStatus.SUCCESS);
   }
 
-  @PostMapping("insert")
-  public String insert(Teacher teacher, Model model) {
-    try {
-      teacherService.add(teacher);
-    } catch (Exception e) {
-      e.printStackTrace();
-      model.addAttribute("error", "other");
-    }
-    return "teacher/insert";
+  @GetMapping
+  public Object list() {
+    return new RestResult()
+        .setStatus(RestStatus.SUCCESS)
+        .setData(teacherService.list());
   }
 
-  @GetMapping("list")
-  public String list(Model model) {
-    model.addAttribute("teachers", teacherService.list());
-    return "teacher/list";
+  @GetMapping("{no}")
+  public Object view(@PathVariable int no) {
+    return new RestResult()
+        .setStatus(RestStatus.SUCCESS)
+        .setData(teacherService.get(no));
   }
 
-  @GetMapping("view")
-  public String view(int no, Model model) {
-    model.addAttribute("teacher", teacherService.get(no));
-    return "teacher/view";
+  @PutMapping("{no}")
+  public Object update(
+      @PathVariable int no,
+      @RequestBody Teacher teacher) {
+
+    log.debug(teacher);
+
+    teacher.setNo(no);
+    teacherService.update(teacher);
+
+    return new RestResult()
+        .setStatus(RestStatus.SUCCESS);
   }
 
-  @PostMapping("update")
-  public String update(Teacher teacher, Model model) {
-    try {
-      teacherService.update(teacher);
-    } catch (Exception e) {
-      e.printStackTrace();
-      model.addAttribute("error", "other");
-    }
-    return "teacher/update";
-  }
-
-  @PostMapping("delete")
-  public String delete(int no, Model model) {
-    try {
-      teacherService.delete(no);
-    } catch (Exception e) {
-      e.printStackTrace();
-      model.addAttribute("error", "other");
-    }
-    return "teacher/delete";
+  @DeleteMapping("{no}")
+  public Object delete(@PathVariable int no) {
+    teacherService.delete(no);
+    return new RestResult()
+        .setStatus(RestStatus.SUCCESS);
   }
 
 }
